@@ -34,3 +34,7 @@
 [] - mostrar todos os emprestiomos pendente, com o nome do livro, name do usuario, CPF, data de saida e data de retorno ordenados pela data de retorno mais aontiga
 
 ## Estruturas
+
+```ts
+[] create: ({firstName, lastName, cpf, phone, address, email}) => Promise<void>
+```

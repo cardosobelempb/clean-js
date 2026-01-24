@@ -1,7 +1,7 @@
-module.export = function createUserUseCase(){
-  return async function({firstName, lastNAme, cpf, phone, address, email}){
-    await useRepository.create({
-      firstName, lastNAme, cpf, phone, address, email
+module.exports = function createUserUseCase({userRepository}){
+  return async function({firstName, lastName, cpf, phone, address, email}){
+    await userRepository.create({
+      firstName, lastName, cpf, phone, address, email
     })
   }
 }
