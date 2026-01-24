@@ -8,4 +8,6 @@ node - v;
 mkdir [name-project]
 cd  [name-project]
 code .
+
+npm init -y
 ```
