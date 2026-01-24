@@ -1,5 +1,6 @@
 const { describe, expect, it } = require("@jest/globals");
 const createUserUseCase = require('./create-user.usecase');
+const AppError = require('../shared/errors/AppError')
 
 describe('Cadastrar um usuário Usecase', () => {
 
@@ -26,6 +27,6 @@ describe('Cadastrar um usuário Usecase', () => {
   })
 
   it('deve retornar um throw AppErro se o userRepository não for fornecido', async  () => {
-    expect(() => createUserUseCase({})).toThrow('userRepository não fornecido')
+    expect(() => createUserUseCase({})).toThrow(AppError.dependencias)
   })
 })
