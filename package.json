@@ -7,14 +7,18 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src/** test/** --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@jest/globals": "^30.2.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.1.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6"
   }

@@ -17,3 +17,10 @@ npm init -y
 ```ts
 npm init jest@latest
 ```
+
+## lint
+
+```ts
+npm install eslint -D
+./node_modules/.bin/eslint --init
+```
