@@ -1,4 +1,4 @@
-# start
+## start
 
 ```ts
 node - v;
@@ -10,4 +10,10 @@ cd  [name-project]
 code .
 
 npm init -y
+```
+
+## test
+
+```ts
+npm init jest@latest
 ```
