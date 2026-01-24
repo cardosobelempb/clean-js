@@ -24,4 +24,8 @@ describe('Cadastrar um usuário Usecase', () => {
     expect(userRepository.create).toHaveBeenCalledWith(userDTO)
     expect(userRepository.create).toHaveBeenCalledTimes(1)
   })
+
+  it('deve retornar um throw AppErro se o userRepository não for fornecido', async  () => {
+    expect(() => createUserUseCase({})).toThrow('userRepository não fornecido')
+  })
 })
