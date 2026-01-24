@@ -27,6 +27,8 @@
     "ts-jest": "^29.4.6"
   },
   "dependencies": {
+    "body-parser": "^2.2.2",
+    "consign": "^0.1.6",
     "express": "^5.2.1"
   }
 }
