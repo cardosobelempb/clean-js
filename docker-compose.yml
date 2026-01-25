@@ -1,45 +1,23 @@
-version: "3.8"
-
 services:
-  routeros:
-    image: mkv28/mikrotik-routeros:latest
-    container_name: routeros-7
-    privileged: true # NECESSÁRIO para virtualização
-    restart: unless-stopped
-
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: db_postgres
+    restart: always
     environment:
-      # Define parâmetros da VM
-      - BOOT=chr
-      - RAM=512
-      - CPU=1
-      - DISK_SIZE=2G
-
-    volumes:
-      # Disco do RouterOS
-      - ./routeros:/storage
-
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: barriga
     ports:
-      # Winbox
-      - "8291:8291"
-      # SSH
-      - "2222:22"
-      # API
-      - "8728:8728"
-      # WebFig
-      - "8080:80"
-      - "2223:23"
-      - "7777:80"
-      - "8729:8729"
-      - "28728:8728"
-      - "28729:8729"
-      - "5900:5900"
-
-    devices:
-      - /dev/kvm:/dev/kvm
-
-    networks:
-      - routeros_net
-
-networks:
-  routeros_net:
-    driver: bridge
+      - 5432:5432
+    volumes:
+      - postgres_data:/bitnami/postgresql
+volumes:
+  postgres_data:
+    driver: local
+  # cache:
+  #   container_name: nest-clean-cache
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - ./data/redis:/data
