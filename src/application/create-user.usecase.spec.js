@@ -4,7 +4,8 @@ const AppError = require('../shared/errors/AppError');
 
 describe('Cadastrar um usuário Usecase', () => {
   const userRepository = {
-    create: jest.fn()
+    create: jest.fn(),
+    existeCpf: jest.fn()
   };
 
   it('deve poder cadastar um usuário', async () => {
@@ -35,6 +36,23 @@ describe('Cadastrar um usuário Usecase', () => {
     const sut = createUserUseCase({ userRepository });
     await expect(() => sut({})).rejects.toThrow(
       new AppError(AppError.REQUIRED)
+    );
+  });
+
+  it('deve retornar um throw AppErro se já existir um caastr com o cpf', async () => {
+    userRepository.existeCpf.mockResolvedValue(true);
+    const userDTO = {
+      firstName: 'fistName_valid',
+      lastName: 'lastName_valid',
+      cpf: 'cpf_ja_cadastrado',
+      phone: 'phone_valid',
+      address: 'address_valid',
+      email: 'email_valid'
+    };
+
+    const sut = createUserUseCase({ userRepository });
+    await expect(() => sut(userDTO)).rejects.toThrow(
+      new AppError('CPF já cadastrado')
     );
   });
 });
