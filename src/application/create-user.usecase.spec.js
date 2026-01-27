@@ -5,7 +5,9 @@ const { AppError, Either } = require('../shared/errors');
 describe('Cadastrar um usuário Usecase', () => {
   const userRepository = {
     create: jest.fn(),
-    existeCpf: jest.fn()
+    existeCpf: jest.fn(),
+    existeEmail: jest.fn(),
+    findById: jest.fn()
   };
 
   it('deve poder cadastar um usuário', async () => {
@@ -39,7 +41,7 @@ describe('Cadastrar um usuário Usecase', () => {
     );
   });
 
-  it('deve retornar um throw AppErro se já existir um caastr com o cpf', async () => {
+  it('deve retornar um Either.left se já existir um caastr com o cpf', async () => {
     userRepository.existeCpf.mockResolvedValue(true);
     const userDTO = {
       firstName: 'fistName_valid',
@@ -57,5 +59,26 @@ describe('Cadastrar um usuário Usecase', () => {
     expect(output.left).toEqual(Either.valorJaCadastrado('cpf'));
     expect(userRepository.existeCpf).toHaveBeenCalledWith(userDTO.cpf);
     expect(userRepository.existeCpf).toHaveBeenCalledTimes(1);
+  });
+
+  it('deve retornar um Either.left se já existir um castrado com o email', async () => {
+    userRepository.existeCpf.mockResolvedValue(false);
+    userRepository.existeEmail.mockResolvedValue(true);
+    const userDTO = {
+      firstName: 'fistName_valid',
+      lastName: 'lastName_valid',
+      cpf: 'cpf_valid',
+      phone: 'phone_valid',
+      address: 'address_valid',
+      email: 'email_ja_cadastrado'
+    };
+
+    const sut = createUserUseCase({ userRepository });
+    const output = await sut(userDTO);
+
+    expect(output.right).toBeNull();
+    expect(output.left).toEqual(Either.valorJaCadastrado('email'));
+    expect(userRepository.existeEmail).toHaveBeenCalledWith(userDTO.email);
+    expect(userRepository.existeEmail).toHaveBeenCalledTimes(1);
   });
 });
