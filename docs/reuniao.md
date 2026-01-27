@@ -37,4 +37,6 @@
 
 ```ts
 [] create: ({firstName, lastName, cpf, phone, address, email}) => Promise<void>
+[] existeCpf(cpf) = Prmise<boolean>
+[] existeEmail(email) = Prmise<boolean>
 ```
