@@ -35,9 +35,29 @@ describe('FindByCpfUseCase', () => {
     expect(userRepository.findByCpf).toHaveBeenCalledTimes(1);
   });
 
-  // it('deve retornar um throw AppErro se o userRepository não for fornecido', async () => {
-  //   expect(() => createUserUseCase({})).toThrow(
-  //     new AppError(AppError.dependencias)
-  //   );
-  // });
+  it('deve retornar null se não existir nenhum usuário com cpf informado', async () => {
+    userRepository.findByCpf.mockResolvedValue(null);
+    const cpfDTO = {
+      cpf: 'cpf_nao_cadastrado'
+    };
+    const sut = findByCpfUserUseCase({ userRepository });
+    const output = await sut(cpfDTO);
+
+    expect(output.right).toBeNull();
+    expect(userRepository.findByCpf).toHaveBeenCalledWith(cpfDTO.cpf);
+    expect(userRepository.findByCpf).toHaveBeenCalledTimes(1);
+  });
+
+  it('deve retornar um throw AppErro se o userRepository não for fornecido', async () => {
+    expect(() => findByCpfUserUseCase({})).toThrow(
+      new AppError(AppError.dependencias)
+    );
+  });
+
+  it('deve retornar um Either.left se os campos obrigatórios não forem fornecido', async () => {
+    const sut = findByCpfUserUseCase({ userRepository });
+
+    const output = await sut({});
+    expect(output.left).toStrictEqual(Either.valorJaCadastrado('cpf'));
+  });
 });

@@ -41,7 +41,7 @@ describe('Cadastrar um usuário Usecase', () => {
     );
   });
 
-  it('deve retornar um Either.left se já existir um caastr com o cpf', async () => {
+  it('deve retornar um Either.left se já existir um cadastro com o cpf', async () => {
     userRepository.existeCpf.mockResolvedValue(true);
     const userDTO = {
       firstName: 'fistName_valid',
