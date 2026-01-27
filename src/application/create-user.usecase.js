@@ -1,4 +1,4 @@
-const AppError = require('../shared/errors/AppError');
+const { Either, AppError } = require('../shared/errors');
 module.exports = function createUserUseCase({ userRepository }) {
   if (!userRepository) throw new AppError(AppError.dependencias);
 
@@ -6,7 +6,7 @@ module.exports = function createUserUseCase({ userRepository }) {
     const checaCampo = firstName && cpf && phone;
     if (!checaCampo) throw new AppError(AppError.REQUIRED);
     const checaCpfExiste = await userRepository.existeCpf(cpf);
-    if (checaCpfExiste) throw new AppError('CPF já cadastrado');
+    if (checaCpfExiste) return Either.Left(Either.valorJaCadastrado('cpf'));
     await userRepository.create({
       firstName,
       lastName,
@@ -15,6 +15,8 @@ module.exports = function createUserUseCase({ userRepository }) {
       address,
       email
     });
+
+    return Either.Right(null);
   };
 };
 

@@ -1,6 +1,6 @@
 const { describe, expect, it, fn } = require('@jest/globals');
 const createUserUseCase = require('./create-user.usecase');
-const AppError = require('../shared/errors/AppError');
+const { AppError, Either } = require('../shared/errors');
 
 describe('Cadastrar um usuário Usecase', () => {
   const userRepository = {
@@ -21,7 +21,7 @@ describe('Cadastrar um usuário Usecase', () => {
     const sut = createUserUseCase({ userRepository });
     const output = await sut(userDTO);
 
-    expect(output).toBeUndefined();
+    expect(output.right).toBeNull();
     expect(userRepository.create).toHaveBeenCalledWith(userDTO);
     expect(userRepository.create).toHaveBeenCalledTimes(1);
   });
@@ -51,8 +51,11 @@ describe('Cadastrar um usuário Usecase', () => {
     };
 
     const sut = createUserUseCase({ userRepository });
-    await expect(() => sut(userDTO)).rejects.toThrow(
-      new AppError('CPF já cadastrado')
-    );
+    const output = await sut(userDTO);
+
+    expect(output.right).toBeNull();
+    expect(output.left).toEqual(Either.valorJaCadastrado('cpf'));
+    expect(userRepository.existeCpf).toHaveBeenCalledWith(userDTO.cpf);
+    expect(userRepository.existeCpf).toHaveBeenCalledTimes(1);
   });
 });
