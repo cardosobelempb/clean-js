@@ -1,4 +1,4 @@
-const { describe, expect, it, fn } = require('@jest/globals');
+const { describe, expect, it } = require('@jest/globals');
 const findByCpfUserUseCase = require('./find-by-cpf-user.usecase');
 const { AppError, Either } = require('../shared/errors');
 

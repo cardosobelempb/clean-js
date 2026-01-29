@@ -1,14 +1,21 @@
-const { describe, expect, it, fn } = require('@jest/globals');
-const createUserUseCase = require('./create-user.usecase');
+const { describe, expect, it } = require('@jest/globals');
 const { AppError, Either } = require('../shared/errors');
+const createUserUseCase = require('./create-user.usecase');
+
+const makeUserRepositoryMock = () => ({
+  create: jest.fn(),
+  existeCpf: jest.fn(),
+  existeEmail: jest.fn(),
+  findById: jest.fn()
+});
 
 describe('Cadastrar um usuário Usecase', () => {
-  const userRepository = {
-    create: jest.fn(),
-    existeCpf: jest.fn(),
-    existeEmail: jest.fn(),
-    findById: jest.fn()
-  };
+  let userRepository = makeUserRepositoryMock;
+  beforeEach(() => {
+    // Garante isolamento entre os testes
+    userRepository = makeUserRepositoryMock();
+    jest.clearAllMocks();
+  });
 
   it('deve poder cadastar um usuário', async () => {
     const userDTO = {

@@ -1,4 +1,5 @@
-const { Either, AppError } = require('../shared/errors');
+const { AppError, Either } = require('../shared/errors');
+
 module.exports = function createUserUseCase({ userRepository }) {
   if (!userRepository) throw new AppError(AppError.dependencias);
 
