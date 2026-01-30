@@ -10,7 +10,8 @@ const makeBookRepositoryMock = () => ({
   create: jest.fn(),
   existeCpf: jest.fn(),
   existeEmail: jest.fn(),
-  findById: jest.fn()
+  findById: jest.fn(),
+  existeIsbn: jest.fn()
 });
 
 describe('CreateBookUsecase', () => {
@@ -59,8 +60,8 @@ describe('CreateBookUsecase', () => {
     });
   });
 
-  it.skip('deve retornar Either.left se o ISBN já estiver cadastrado', async () => {
-    bookRepository.existeCpf.mockResolvedValue(true);
+  it('deve retornar Either.left se o ISBN já estiver cadastrado', async () => {
+    bookRepository.existeIsbn.mockResolvedValue(true);
     const bookDTO = {
       name: 'Book duplicado',
       quantity: 5,
@@ -73,29 +74,8 @@ describe('CreateBookUsecase', () => {
     const output = await sut(bookDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toEqual(Either.valorJaCadastrado('cpf'));
-    expect(bookRepository.existeCpf).toHaveBeenCalledWith(bookDTO.cpf);
-    expect(bookRepository.existeCpf).toHaveBeenCalledTimes(1);
-  });
-
-  it.skip('deve retornar um Either.left se já existir um castrado com o email', async () => {
-    bookRepository.existeCpf.mockResolvedValue(false);
-    bookRepository.existeEmail.mockResolvedValue(true);
-    const bookDTO = {
-      firstName: 'fistName_valid',
-      lastName: 'lastName_valid',
-      cpf: 'cpf_valid',
-      phone: 'phone_valid',
-      address: 'address_valid',
-      email: 'email_ja_cadastrado'
-    };
-
-    const sut = createBookUseCase({ bookRepository });
-    const output = await sut(bookDTO);
-
-    expect(output.right).toBeNull();
-    expect(output.left).toEqual(Either.valorJaCadastrado('email'));
-    expect(bookRepository.existeEmail).toHaveBeenCalledWith(bookDTO.email);
-    expect(bookRepository.existeEmail).toHaveBeenCalledTimes(1);
+    expect(output.left).toEqual(Either.valorJaCadastrado('ISBN'));
+    expect(bookRepository.existeIsbn).toHaveBeenCalledWith(bookDTO.isbn);
+    expect(bookRepository.existeIsbn).toHaveBeenCalledTimes(1);
   });
 });
