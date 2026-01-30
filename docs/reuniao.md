@@ -35,8 +35,17 @@
 
 ## Estruturas
 
-```ts
+## UserRepository
+
+```js
 [] create: ({firstName, lastName, cpf, phone, address, email}) => Promise<void>
 [] existeCpf(cpf) = Prmise<boolean>
 [] existeEmail(email) = Prmise<boolean>
+```
+
+## BookRepository
+
+```js
+[] create: ({name, quantity, author, gender, isbn}) => Promise<void>
+[] existeIsbn(isbn) = Prmise<boolean>
 ```

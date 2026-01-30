@@ -7,10 +7,10 @@ module.exports = function createUserUseCase({ userRepository }) {
     const checaCampo = firstName && cpf && phone;
     if (!checaCampo) throw new AppError(AppError.REQUIRED);
     const checaCpfExiste = await userRepository.existeCpf(cpf);
-    if (checaCpfExiste) return Either.Left(Either.valorJaCadastrado('cpf'));
+    if (checaCpfExiste) return Either.left(Either.valorJaCadastrado('cpf'));
 
     const checaEmailExiste = await userRepository.existeEmail(email);
-    if (checaEmailExiste) return Either.Left(Either.valorJaCadastrado('email'));
+    if (checaEmailExiste) return Either.left(Either.valorJaCadastrado('email'));
 
     await userRepository.create({
       firstName,
@@ -21,7 +21,7 @@ module.exports = function createUserUseCase({ userRepository }) {
       email
     });
 
-    return Either.Right(null);
+    return Either.right(null);
   };
 };
 

@@ -5,8 +5,7 @@ const createUserUseCase = require('./create-user.usecase');
 const makeUserRepositoryMock = () => ({
   create: jest.fn(),
   existeCpf: jest.fn(),
-  existeEmail: jest.fn(),
-  findById: jest.fn()
+  existeEmail: jest.fn()
 });
 
 describe('Cadastrar um usuário Usecase', () => {

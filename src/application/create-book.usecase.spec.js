@@ -8,9 +8,6 @@ const createBookUseCase = require('./create-book.usecase');
  */
 const makeBookRepositoryMock = () => ({
   create: jest.fn(),
-  existeCpf: jest.fn(),
-  existeEmail: jest.fn(),
-  findById: jest.fn(),
   existeIsbn: jest.fn()
 });
 
@@ -74,7 +71,7 @@ describe('CreateBookUsecase', () => {
     const output = await sut(bookDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toEqual(Either.valorJaCadastrado('ISBN'));
+    expect(output.left).toStrictEqual(Either.valorJaCadastrado('cpf'));
     expect(bookRepository.existeIsbn).toHaveBeenCalledWith(bookDTO.isbn);
     expect(bookRepository.existeIsbn).toHaveBeenCalledTimes(1);
   });

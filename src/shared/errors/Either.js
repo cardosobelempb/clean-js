@@ -7,11 +7,11 @@ module.exports = class Either {
     this.right = right;
   }
 
-  static Left(left) {
+  static left(left) {
     return new Either(left, null);
   }
 
-  static Right(right) {
+  static right(right) {
     return new Either(null, right);
   }
 
