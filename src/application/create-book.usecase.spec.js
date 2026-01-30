@@ -45,11 +45,18 @@ describe('CreateBookUsecase', () => {
     );
   });
 
-  it.skip('deve retornar um throw AppErro se os campos obrigatórios não forem fornecido', async () => {
+  it('deve lançar AppError quando os campos obrigatórios não são informados', async () => {
+    // Arrange
     const sut = createBookUseCase({ bookRepository });
-    await expect(() => sut({})).rejects.toThrow(
+    const invalidInput = {};
+
+    // Act & Assert
+    await expect(sut(invalidInput)).rejects.toThrow(
       new AppError(AppError.REQUIRED)
     );
+    await expect(sut(invalidInput)).rejects.toMatchObject({
+      message: AppError.REQUIRED
+    });
   });
 
   it.skip('deve retornar Either.left se o ISBN já estiver cadastrado', async () => {

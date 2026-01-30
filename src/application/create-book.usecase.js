@@ -4,8 +4,8 @@ module.exports = function createBookUseCase({ bookRepository }) {
   if (!bookRepository) throw new AppError(AppError.dependencias);
 
   return async function ({ name, quantity, author, gender, isbn }) {
-    // const checaCampo = name && quantity && isbn;
-    // if (!checaCampo) throw new AppError(AppError.REQUIRED);
+    const checaCampo = name && quantity && author && gender && isbn;
+    if (!checaCampo) throw new AppError(AppError.REQUIRED);
     // const checaExiste = await bookRepository.existeCpf(cpf);
     // if (checaCpfExiste) return Either.Left(Either.valorJaCadastrado('cpf'));
 
