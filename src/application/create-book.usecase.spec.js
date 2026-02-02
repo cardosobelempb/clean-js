@@ -71,7 +71,7 @@ describe('CreateBookUsecase', () => {
     const output = await sut(bookDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toStrictEqual(Either.valorJaCadastrado('cpf'));
+    expect(output.left).toStrictEqual(Either.valorJaCadastrado('isbn'));
     expect(bookRepository.existeIsbn).toHaveBeenCalledWith(bookDTO.isbn);
     expect(bookRepository.existeIsbn).toHaveBeenCalledTimes(1);
   });
