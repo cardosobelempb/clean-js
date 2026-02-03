@@ -1,15 +1,7 @@
 const { describe, expect, it } = require('@jest/globals');
 const { AppError, Either } = require('../shared/errors');
 const createBookUseCase = require('./create-book.usecase');
-
-/**
- * Factory para criar um repositório mockado
- * Evita repetição e centraliza alterações futuras
- */
-const makeBookRepositoryMock = () => ({
-  create: jest.fn(),
-  existeIsbn: jest.fn()
-});
+const makeBookRepositoryMock = require('./repositories/makeBookRepositoryMock');
 
 describe('CreateBookUsecase', () => {
   let bookRepository = makeBookRepositoryMock;
@@ -58,7 +50,7 @@ describe('CreateBookUsecase', () => {
   });
 
   it('deve retornar Either.left se o ISBN já estiver cadastrado', async () => {
-    bookRepository.existeIsbn.mockResolvedValue(true);
+    bookRepository.existsById.mockResolvedValue(true);
     const bookDTO = {
       name: 'Book duplicado',
       quantity: 5,
@@ -71,8 +63,8 @@ describe('CreateBookUsecase', () => {
     const output = await sut(bookDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toStrictEqual(Either.valorJaCadastrado('isbn'));
-    expect(bookRepository.existeIsbn).toHaveBeenCalledWith(bookDTO.isbn);
-    expect(bookRepository.existeIsbn).toHaveBeenCalledTimes(1);
+    expect(output.left).toStrictEqual(Either.requiredField('isbn'));
+    expect(bookRepository.existsById).toHaveBeenCalledWith(bookDTO.isbn);
+    expect(bookRepository.existsById).toHaveBeenCalledTimes(1);
   });
 });

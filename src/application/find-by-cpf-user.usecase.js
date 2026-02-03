@@ -3,7 +3,7 @@ module.exports = function findByCpfUserUseCase({ userRepository }) {
   if (!userRepository) throw new AppError(AppError.dependencias);
 
   return async function ({ cpf }) {
-    if (!cpf) return Either.left(Either.valorJaCadastrado('cpf'));
+    if (!cpf) return Either.left(Either.requiredField('cpf'));
 
     const user = await userRepository.findByCpf(cpf);
 

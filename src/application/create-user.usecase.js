@@ -6,11 +6,11 @@ module.exports = function createUserUseCase({ userRepository }) {
   return async function ({ firstName, lastName, cpf, phone, address, email }) {
     const checaCampo = firstName && cpf && phone;
     if (!checaCampo) throw new AppError(AppError.REQUIRED);
-    const checaCpfExiste = await userRepository.existeCpf(cpf);
-    if (checaCpfExiste) return Either.left(Either.valorJaCadastrado('cpf'));
+    const existsByCpf = await userRepository.existsByCpf(cpf);
+    if (existsByCpf) return Either.left(Either.requiredField('cpf'));
 
-    const checaEmailExiste = await userRepository.existeEmail(email);
-    if (checaEmailExiste) return Either.left(Either.valorJaCadastrado('email'));
+    const existsByEmail = await userRepository.existsByEmail(email);
+    if (existsByEmail) return Either.left(Either.requiredField('email'));
 
     await userRepository.create({
       firstName,

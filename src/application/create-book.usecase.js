@@ -7,8 +7,8 @@ module.exports = function createBookUseCase({ bookRepository }) {
     const checaCampo = name && quantity && author && gender && isbn;
     if (!checaCampo) throw new AppError(AppError.REQUIRED);
 
-    const checaIsbmExiste = await bookRepository.existeIsbn(isbn);
-    if (checaIsbmExiste) return Either.left(Either.valorJaCadastrado('isbn'));
+    const checaIsbmExiste = await bookRepository.existsById(isbn);
+    if (checaIsbmExiste) return Either.left(Either.requiredField('isbn'));
 
     await bookRepository.create({
       name,

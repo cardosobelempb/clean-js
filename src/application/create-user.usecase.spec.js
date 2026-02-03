@@ -2,11 +2,7 @@ const { describe, expect, it } = require('@jest/globals');
 const { AppError, Either } = require('../shared/errors');
 const createUserUseCase = require('./create-user.usecase');
 
-const makeUserRepositoryMock = () => ({
-  create: jest.fn(),
-  existeCpf: jest.fn(),
-  existeEmail: jest.fn()
-});
+const makeUserRepositoryMock = require('./repositories/makeUserRepositoryMock');
 
 describe('Cadastrar um usuário Usecase', () => {
   let userRepository = makeUserRepositoryMock;
@@ -48,7 +44,7 @@ describe('Cadastrar um usuário Usecase', () => {
   });
 
   it('deve retornar um Either.left se já existir um cadastro com o cpf', async () => {
-    userRepository.existeCpf.mockResolvedValue(true);
+    userRepository.existsByCpf.mockResolvedValue(true);
     const userDTO = {
       firstName: 'fistName_valid',
       lastName: 'lastName_valid',
@@ -62,14 +58,14 @@ describe('Cadastrar um usuário Usecase', () => {
     const output = await sut(userDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toEqual(Either.valorJaCadastrado('cpf'));
-    expect(userRepository.existeCpf).toHaveBeenCalledWith(userDTO.cpf);
-    expect(userRepository.existeCpf).toHaveBeenCalledTimes(1);
+    expect(output.left).toEqual(Either.requiredField('cpf'));
+    expect(userRepository.existsByCpf).toHaveBeenCalledWith(userDTO.cpf);
+    expect(userRepository.existsByCpf).toHaveBeenCalledTimes(1);
   });
 
   it('deve retornar um Either.left se já existir um castrado com o email', async () => {
-    userRepository.existeCpf.mockResolvedValue(false);
-    userRepository.existeEmail.mockResolvedValue(true);
+    userRepository.existsByCpf.mockResolvedValue(false);
+    userRepository.existsByEmail.mockResolvedValue(true);
     const userDTO = {
       firstName: 'fistName_valid',
       lastName: 'lastName_valid',
@@ -83,8 +79,8 @@ describe('Cadastrar um usuário Usecase', () => {
     const output = await sut(userDTO);
 
     expect(output.right).toBeNull();
-    expect(output.left).toEqual(Either.valorJaCadastrado('email'));
-    expect(userRepository.existeEmail).toHaveBeenCalledWith(userDTO.email);
-    expect(userRepository.existeEmail).toHaveBeenCalledTimes(1);
+    expect(output.left).toEqual(Either.requiredField('email'));
+    expect(userRepository.existsByEmail).toHaveBeenCalledWith(userDTO.email);
+    expect(userRepository.existsByEmail).toHaveBeenCalledTimes(1);
   });
 });

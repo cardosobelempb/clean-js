@@ -58,6 +58,6 @@ describe('FindByCpfUseCase', () => {
     const sut = findByCpfUserUseCase({ userRepository });
 
     const output = await sut({});
-    expect(output.left).toStrictEqual(Either.valorJaCadastrado('cpf'));
+    expect(output.left).toStrictEqual(Either.requiredField('cpf'));
   });
 });

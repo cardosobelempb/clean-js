@@ -15,7 +15,7 @@ module.exports = class Either {
     return new Either(null, right);
   }
 
-  static valorJaCadastrado(valor) {
+  static requiredField(valor) {
     return { message: `${valor} já cadastrado` };
   }
 };
